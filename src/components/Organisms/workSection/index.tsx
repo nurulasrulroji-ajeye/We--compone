@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
-import { work, Android, Web, Uiux } from "../../../assets";
+import { BsGlobe } from "react-icons/bs";
+import { AiFillAndroid } from "react-icons/all";
+import * as Icon from "react-icons/im";
+import { useAppDispatch, useAppSelector } from "../../../app/hook";
+import { getService } from "../../../features/services/action";
+import { work } from "../../../assets";
+import DynamicIcon from "../../Atoms/DynamicIcon/Index";
 
 const Works = () => {
+  const { data } = useAppSelector((state) => state.service);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getService());
+  }, []);
+
   return (
     <div
       className="w-full flex flex-col md:flex-row md:mt-[124px] mt-10 justify-center items-center md:gap-20"
@@ -13,38 +26,22 @@ const Works = () => {
       </div>
       <div className="px-4 md:p-0">
         <h1 className="font-semibold text-4xl font-Popins">What We Do?</h1>
-        <div className="flex gap-5 mt-9">
-          <div className="mt-[2px]">
-            <Android />
+        {data.map((services) => (
+          <div className="flex gap-5 mt-9" key={services.id}>
+            <div className="mt-[2px]">
+              <DynamicIcon name={services.icon} />
+            </div>
+            <div>
+              <h4 className="font-Popins font-semibold text-sm mb-2 text-[#414141]">
+                {services.name}
+              </h4>
+              <p className="max-w-[282px] font-Popins text-xs font-normal leading-6">
+                {services.desc}
+              </p>
+            </div>
           </div>
-          <div>
-            <h4 className="font-Popins font-semibold text-sm mb-2 text-[#414141]">
-              Mobile Application
-            </h4>
-            <p className="max-w-[282px] font-Popins text-xs font-normal leading-6">
-              Building mobile applications is never easy. P2P lending app ?
-              Logistic App ? E-Commerce App ? We have done them all. Done them
-              all well. Done them all fast.{" "}
-            </p>
-          </div>
-        </div>
-        <div className="flex gap-5 mt-9">
-          <div className="mt-[2px]">
-            <Web />
-          </div>
-          <div>
-            <h4 className="font-Popins font-semibold text-sm mb-2 text-[#414141]">
-              Web Application
-            </h4>
-            <p className="max-w-[290px] w-full font-Popins text-xs font-normal leading-6">
-              We can build any web applications you need. A personal blog ?
-              Company Profile ? E-commerce ? or any specific functionalities ?
-              We got you covered! We have a strong team of web developers that
-              can follow your stack and needs.{" "}
-            </p>
-          </div>
-        </div>
-        <div className="flex gap-5 mt-9">
+        ))}
+        {/* <div className="flex gap-5 mt-9">
           <div className="mt-[2px]">
             <Uiux />
           </div>
@@ -58,7 +55,7 @@ const Works = () => {
               addressing the right pain points.
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
